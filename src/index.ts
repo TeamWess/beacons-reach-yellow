@@ -28,36 +28,6 @@ app.get('/health', async () => ({
   ts: new Date().toISOString(),
   service: 'bridge-y'
 }));
-import 'dotenv/config';
-import Fastify from 'fastify';
-import cors from '@fastify/cors';
-import pg from 'pg';
-
-const { Pool } = pg;
-
-// Database connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
-
-// Fastify app
-const app = Fastify({
-  logger: {
-    transport: process.env.NODE_ENV === 'development' 
-      ? { target: 'pino-pretty' }
-      : undefined
-  }
-});
-
-await app.register(cors, { origin: true });
-
-// Health check
-app.get('/health', async () => ({ 
-  ok: true, 
-  ts: new Date().toISOString(),
-  service: 'bridge-y'
-}));
 
 // Schema definitions
 const ShelfMetaBody = {
